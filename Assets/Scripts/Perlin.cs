@@ -21,9 +21,10 @@ public class Perlin : MonoBehaviour
     private static Perlin _Instance;
     public static Perlin Instance
     {
+        //checks if there is an instance of the class, if there is not it creates one
         get
         {
-            if(!_Instance)
+            if (!_Instance)
             {
                 _Instance = new GameObject().AddComponent<Perlin>();
             }
@@ -112,8 +113,15 @@ public class Perlin : MonoBehaviour
         }
         return t;
     }
-    public float[,] NoiseGeneration(int width, int height, int seed, int seedOffset,float persistance, int octaves, float lacunarity,float scale)
+    public float[,] NoiseGeneration(int width, int height, int _seed, int _seedOffset,float _persistance, int _octaves, float _lacunarity,float _scale)
     {
+        seed = _seed;
+        seedOffset = _seedOffset;
+        persistance = _persistance;
+        octaves = _octaves;
+        lacunarity = _lacunarity;
+        scale = _scale;
+
         float[,] t = new float[width, height];
 
         float seedValue = GenerateSeedValue(seed, seedOffset);

@@ -34,10 +34,14 @@ public class Player : MonoBehaviour
     Vector3 movementDirection = Vector3.zero;
 
 
+    //status
+    public float hunger = 100f;
+    public float hungerRate = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartCoroutine(Hunger());
     }
 
     private void Awake()
@@ -121,5 +125,31 @@ public class Player : MonoBehaviour
     public Vector2 GetPlayerMovement()
     {
         return movement.ReadValue<Vector2>();
+    }
+
+    public void QuitGame(InputAction.CallbackContext context)
+    {
+        Application.Quit();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Food")
+        {
+            if(hunger < 100f)
+            {
+                hunger += 10f;
+                Destroy(other.gameObject);
+            }
+        }
+    }
+
+    IEnumerator Hunger()
+    {
+        while (true)
+        {
+            hunger -= 1f;
+            yield return new WaitForSeconds(hungerRate);
+        }
     }
 }

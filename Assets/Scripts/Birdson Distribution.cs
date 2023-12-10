@@ -21,7 +21,7 @@ public class BirdsonDistribution : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Generate());
+        Generate();
     }
 
     public BirdsonDistribution(int radius, int width, int height)
@@ -43,13 +43,17 @@ public class BirdsonDistribution : MonoBehaviour
         return new Vector2(Random.Range(0, width), Random.Range(0, height));
     }
 
-    IEnumerator Generate()
+    void Generate()
     {
         BirdsonDistribution sampler = new BirdsonDistribution(radius,width,height);
         foreach(Vector2 sample in sampler.FindSamples())
         {
-            Instantiate(orb, new Vector3(sample.x, 0, sample.y), Quaternion.identity,this.transform);
-            yield return new WaitForSeconds(secondsToWait);
+            //casts a raycast to the ground to find the height of the terrain then spawns the orb at that height
+            RaycastHit hit;
+            if (Physics.Raycast(new Vector3(sample.x, 100, sample.y), Vector3.down, out hit, 1000))
+            {
+                Instantiate(orb, new Vector3(sample.x, hit.point.y, sample.y), Quaternion.identity);
+            }
         }
     }
 

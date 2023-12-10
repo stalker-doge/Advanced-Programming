@@ -8,10 +8,11 @@ public class L_System : MonoBehaviour
 {
 
     [SerializeField] GameObject turtle;
-    [SerializeField] GameObject point;
+    [SerializeField] Transform parent;
     [SerializeField] float lineLength;
     [SerializeField] int iterations;
     [SerializeField] float lineAngle;
+    [SerializeField] float lineAngleDeviation;
     [SerializeField] string axiom;
     [SerializeField] Dictionary<char, string> recursionRules = new Dictionary<char, string>();
     struct TransformData
@@ -34,6 +35,9 @@ public class L_System : MonoBehaviour
         recursionRules.Add('G', "GG");
         recursionRules.Add('A', "A+B");
         recursionRules.Add('B', "A-B");
+        recursionRules.Add('3', "33");
+        recursionRules.Add('4', "44");
+        recursionRules.Add('5', "55");
         GenerateString();
     }
 
@@ -87,51 +91,59 @@ public class L_System : MonoBehaviour
                 case '0':
                 case '1':
                 case 'F':
-                    initialPosition = turtle.transform.position;
-                    turtle.transform.Translate(Vector3.up*lineLength);
-                    TempTurtle = Instantiate(turtle, turtle.transform.position, Quaternion.identity);
+                    initialPosition = parent.position;
+                    parent.Translate(Vector3.up*lineLength);
+                    TempTurtle = Instantiate(turtle, parent.position, Quaternion.identity, parent);
                     TempTurtle.GetComponent<LineRenderer>().SetPosition(0, initialPosition);
-                    TempTurtle.GetComponent<LineRenderer>().SetPosition(1, turtle.transform.position);
+                    TempTurtle.GetComponent<LineRenderer>().SetPosition(1, parent.position);
                     break;
                 case '+':
-                    turtle.transform.Rotate(Vector3.right, lineAngle);
+                    parent.Rotate(Vector3.right,Random.Range(lineAngle-lineAngleDeviation,lineAngle+ lineAngleDeviation));
                     break;
 
                 case '2':
-                    turtle.transform.Rotate(Vector3.forward,lineAngle);
+                    parent.Rotate(Vector3.forward, Random.Range(lineAngle - lineAngleDeviation, lineAngle + lineAngleDeviation));
                     break;
                 case '3':
-                    turtle.transform.Rotate(Vector3.back, lineAngle);
+                    parent.Rotate(Vector3.back, Random.Range(lineAngle - lineAngleDeviation, lineAngle + lineAngleDeviation));
+                    break;
+
+                case '4':
+                        parent.Rotate(Vector3.up, Random.Range(lineAngle - lineAngleDeviation, lineAngle + lineAngleDeviation));
+                    break;
+
+                case '5':
+                    parent.Rotate(Vector3.down, Random.Range(lineAngle - lineAngleDeviation, lineAngle + lineAngleDeviation));
                     break;
 
                 case '-':
-                    turtle.transform.Rotate(Vector3.left, lineAngle);
+                    parent.Rotate(Vector3.left, Random.Range(lineAngle - lineAngleDeviation , lineAngle + lineAngleDeviation));
                     break;
 
                 case '[':
-                    transformData.position = turtle.transform.position;
-                    transformData.rotation = turtle.transform.rotation;
+                    transformData.position = parent.position;
+                    transformData.rotation = parent.rotation;
                     stack.Push(transformData);
                     break;
 
                 case ']':
                     transformData = stack.Pop();
-                    turtle.transform.position = transformData.position;
-                    turtle.transform.rotation = transformData.rotation;
+                    parent.position = transformData.position;
+                    parent.rotation = transformData.rotation;
                     break;
 
                 case '(':
-                    transformData.position = turtle.transform.position;
-                    transformData.rotation = turtle.transform.rotation;
+                    transformData.position = parent.position;
+                    transformData.rotation = parent.rotation;
                     stack.Push(transformData);
-                    turtle.transform.Rotate(Vector3.left, lineAngle);
+                    parent.Rotate(Vector3.left, Random.Range(lineAngle - lineAngleDeviation, lineAngle + lineAngleDeviation));
 
                     break;
                 case ')':
                     transformData = stack.Pop();
-                    turtle.transform.position = transformData.position;
-                    turtle.transform.rotation = transformData.rotation;
-                    turtle.transform.Rotate(Vector3.right, lineAngle);
+                    parent.position = transformData.position;
+                    parent.rotation = transformData.rotation;
+                    parent.Rotate(Vector3.right, Random.Range(lineAngle - lineAngleDeviation, lineAngle + lineAngleDeviation));
                     break;
 
                 default: break;

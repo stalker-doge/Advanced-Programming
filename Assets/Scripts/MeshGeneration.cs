@@ -21,13 +21,11 @@ public class MeshGeneration : MonoBehaviour
     { 
         get
         {
+            if (!_Instance)
             {
-                if (!_Instance)
-                {
-                    _Instance = new GameObject().AddComponent<MeshGeneration>();
-                }
-                return _Instance;
+                _Instance = new GameObject().AddComponent<MeshGeneration>();
             }
+            return _Instance;
         }
     }
     // Start is called before the first frame update
@@ -112,8 +110,12 @@ public class MeshGeneration : MonoBehaviour
         }
     }
 
-    public Mesh GenerateMesh(int width, int height, int cellSize, float[,] noiseMap, int heightAmplifier)
+    public Mesh GenerateMesh(int _width, int _height, int _cellSize, float[,] noiseMap, int _heightAmplifier)
     {
+        width=_width;
+        height=_height;
+        cellSize=_cellSize;
+        heightAmplifier=_heightAmplifier;
         Mesh mesh = new Mesh();
         Vector3[] verts = new Vector3[width * height];
         Vector2[] uvs = new Vector2[width * height];
@@ -223,8 +225,14 @@ public class MeshGeneration : MonoBehaviour
         mesh.RecalculateNormals();
         return mesh;
     }
-    public Mesh GenerateSimplifiedMesh(int width, int height, int cellSize, float[,] mapData, int heightAmplifier, int levelOfDetail)
+    public Mesh GenerateSimplifiedMesh(int _width, int _height, int _cellSize, float[,] mapData, int _heightAmplifier, int _levelOfDetail)
     {
+        width = _width;
+        height = _height;
+        cellSize = _cellSize;
+        heightAmplifier = _heightAmplifier;
+        levelOfDetail = _levelOfDetail;
+        noiseMap = mapData;
         Mesh mesh = new Mesh();
         Vector3[] verts = new Vector3[width * height];
         int[] tris = new int[(width - 1) * (height - 1) * 6];
