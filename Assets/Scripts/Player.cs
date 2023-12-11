@@ -57,6 +57,8 @@ public class Player : MonoBehaviour
         Look();
         Move();
     }
+
+
     private void OnEnable()
     {
         movement = playerInputMap.FindAction("WASD");
@@ -64,7 +66,7 @@ public class Player : MonoBehaviour
         cameraInput = playerInputMap.FindAction("Mouse");
         cameraInput.Enable();
         playerInputMap.FindAction("Jump").started += Jump;
-        //playerInputMap.FindAction("Menu").started += QuitGame;
+        playerInputMap.FindAction("Menu").started += QuitGame;
         playerInputMap.Enable();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -75,7 +77,7 @@ public class Player : MonoBehaviour
         movement.Disable();
         cameraInput.Disable();
         playerInputMap.FindAction("Jump").started -= Jump;
-        //playerInputMap.FindAction("Menu").started -= QuitGame;
+        playerInputMap.FindAction("Menu").started -= QuitGame;
         playerInputMap.Disable();
     }
 
@@ -129,7 +131,16 @@ public class Player : MonoBehaviour
 
     public void QuitGame(InputAction.CallbackContext context)
     {
-        Application.Quit();
+        if(Time.timeScale < 1.0f)
+        {
+            Time.timeScale = 1.0f;
+            //enables time again
+        }
+        else
+        {
+            Time.timeScale = 0;
+            //disables time
+        }
     }
 
     private void OnTriggerEnter(Collider other)

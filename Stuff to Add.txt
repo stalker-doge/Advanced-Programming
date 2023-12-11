@@ -1,0 +1,7 @@
+Level of detail-collision
+Level of detail- terrain
+buttons to show wireframe
+
+states- foliage window preview
+
+seed system- birdson 
