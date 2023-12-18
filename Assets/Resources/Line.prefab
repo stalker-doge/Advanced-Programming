@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7588822612984105303}
-  - component: {fileID: 7219281313582674104}
+  - component: {fileID: 3443464846087127436}
   m_Layer: 0
   m_Name: Line
   m_TagString: Untagged
@@ -25,14 +25,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7940011690547139270}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5000002, y: -0, z: -0, w: 0.8660253}
-  m_LocalPosition: {x: 0, y: 5.732051, z: 1.0000002}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!120 &7219281313582674104
+--- !u!120 &3443464846087127436
 LineRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
@@ -84,8 +84,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 1
+        time: 0.46648067
+        value: 0.20754656
         inSlope: 0
         outSlope: 0
         tangentMode: 0

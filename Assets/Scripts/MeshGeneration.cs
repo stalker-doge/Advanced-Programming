@@ -110,7 +110,7 @@ public class MeshGeneration : MonoBehaviour
         }
     }
 
-    public Mesh GenerateMesh(int _width, int _height, int _cellSize, float[,] noiseMap, int _heightAmplifier)
+    public Mesh GenerateMesh(int _width, int _height, int _cellSize, float[,] noiseMap, int _heightAmplifier, int _levelOfDetail)
     {
         width=_width;
         height=_height;
@@ -123,14 +123,19 @@ public class MeshGeneration : MonoBehaviour
         int vertexIndex, triangleIndex;
         vertexIndex = 0;
         triangleIndex = 0;
-
-        for (int i = 0; i < width; i++)
+        while ((width - 1) % _levelOfDetail > 0)
         {
-            for (int j = 0; j < height; j++)
+            _levelOfDetail--;
+        }
+        int vertsPerLine = ((width - 1) / _levelOfDetail) + 1;
+        for (int i = 0; i < width; i += _levelOfDetail)
+        {
+            for (int j = 0; j < height; j += _levelOfDetail)
             {
                 verts[vertexIndex].x = -width / 2 + i * cellSize;
                 verts[vertexIndex].z = -height / 2 + j * cellSize;
                 verts[vertexIndex].y = noiseMap[i, j] * heightAmplifier;
+
                 float uvWidth, uvHeight;
                 uvWidth = (float)i / width;
                 uvHeight = (float)j / height;
@@ -139,13 +144,14 @@ public class MeshGeneration : MonoBehaviour
                 if (i < width - 1 && j < height - 1)
                 {
 
+
                     tris[triangleIndex] = vertexIndex;
                     tris[triangleIndex + 1] = vertexIndex + 1;
-                    tris[triangleIndex + 2] = vertexIndex + (width);
+                    tris[triangleIndex + 2] = vertexIndex + (vertsPerLine);
 
-                    tris[triangleIndex + 3] = vertexIndex + (width);
+                    tris[triangleIndex + 3] = vertexIndex + (vertsPerLine);
                     tris[triangleIndex + 4] = vertexIndex + 1;
-                    tris[triangleIndex + 5] = vertexIndex + (width) + 1;
+                    tris[triangleIndex + 5] = vertexIndex + (vertsPerLine) + 1;
 
                     triangleIndex = triangleIndex + 6;
 

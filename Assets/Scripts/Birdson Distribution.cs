@@ -18,9 +18,11 @@ public class BirdsonDistribution : MonoBehaviour
     private Vector2[,] grid;
     private Rect rect;
     private List<Vector2> activeSamples = new List<Vector2>();
+    [SerializeField] int seed;
     // Start is called before the first frame update
     void Start()
     {
+        Random.InitState(seed);
         Generate();
     }
 

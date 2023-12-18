@@ -46,8 +46,41 @@ public class L_System : MonoBehaviour
     {
         
     }
+    public void Initialise(float lineLength, int iterations, float lineAngle, float lineAngleDeviation, string axiom, Transform _parent, GameObject _turtle)
+    {
+        recursionRules.Add('X', "F+[[X]-X]-F[-FX]+X");
+        recursionRules.Add('F', "FF");
+        recursionRules.Add('1', "11");
+        recursionRules.Add('2', "22");
+        recursionRules.Add('0', "1(0)0");
+        recursionRules.Add('H', "H-G+H+G-H");
+        recursionRules.Add('G', "GG");
+        recursionRules.Add('A', "A+B");
+        recursionRules.Add('B', "A-B");
+        recursionRules.Add('3', "33");
+        recursionRules.Add('4', "44");
+        recursionRules.Add('5', "55");
+        this.lineLength = lineLength;
+        this.iterations = iterations;
+        this.lineAngle = lineAngle;
+        this.lineAngleDeviation = lineAngleDeviation;
+        this.axiom = axiom;
+        this.parent = _parent;
+        this.turtle = _turtle;
+    }
 
-    void GenerateString()
+    public void SaveSettings(float lineLength, int iterations, float lineAngle, float lineAngleDeviation, string axiom, Transform _parent, GameObject _turtle)
+    {
+        this.lineLength = lineLength;
+        this.iterations = iterations;
+        this.lineAngle = lineAngle;
+        this.lineAngleDeviation = lineAngleDeviation;
+        this.axiom = axiom;
+        this.parent = _parent;
+        this.turtle = _turtle;
+    }
+
+    public void GenerateString()
     {
         string tempString = axiom;
 
@@ -67,13 +100,13 @@ public class L_System : MonoBehaviour
                 }
             }
             tempString= sb.ToString();
-            Debug.Log(tempString);
             sb.Clear();
         }
+        Debug.Log(tempString);
         ApplyRules(tempString);
     }
 
-    void ApplyRules(string axiom)
+    public void ApplyRules(string axiom)
     {
         Vector3 initialPosition = new Vector3();
         GameObject TempTurtle = new GameObject();
@@ -149,5 +182,18 @@ public class L_System : MonoBehaviour
                 default: break;
             }
         }
+    }
+
+    public GameObject CreateTurtle()
+    {
+        turtle = new GameObject();
+        turtle.AddComponent<LineRenderer>();
+        turtle.GetComponent<LineRenderer>().startWidth = 0.1f;
+        turtle.GetComponent<LineRenderer>().endWidth = 0.1f;
+        turtle.GetComponent<LineRenderer>().material = (Material)Resources.Load("Line");
+        turtle.GetComponent<LineRenderer>().startColor = Color.green;
+        turtle.GetComponent<LineRenderer>().endColor = Color.green;
+        turtle.GetComponent<LineRenderer>().positionCount = 2;
+        return turtle;
     }
 }
